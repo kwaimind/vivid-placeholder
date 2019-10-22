@@ -22,8 +22,10 @@ class App extends React.Component {
 
 	handleRestart() {
 		this.setState({
-			imageUrl: ''
+			imageUrl: '',
+			colors: []
 		});
+		document.body.style.backgroundColor = '#3d9970';
 	}
 
 	handleImageChange(e) {
@@ -46,7 +48,7 @@ class App extends React.Component {
 
 	renderSwatches = () => {
 		const { colors } = this.state;
-		return colors.map((color, id) => {
+		return colors.slice(0, 6).map((color, id) => {
 			return (
 				<div
 					key={id}
@@ -98,9 +100,7 @@ class App extends React.Component {
 								/>
 							</div>
 							{this.state.swatchOverlay && (
-								<div className="swatch-overlay">
-									<div className="swatches">{this.renderSwatches()}</div>
-								</div>
+								<SwatchPicker renderSwatches={this.renderSwatches} />
 							)}
 							<SwatchButton
 								toggle={this.state.swatchOverlay}
@@ -131,6 +131,14 @@ function RestartButton(props) {
 	return (
 		<div className="button right" onClick={props.handleRestart}>
 			Try a new image
+		</div>
+	);
+}
+
+function SwatchPicker(props) {
+	return (
+		<div className="swatch-overlay">
+			<div className="swatches">{props.renderSwatches()}</div>
 		</div>
 	);
 }
