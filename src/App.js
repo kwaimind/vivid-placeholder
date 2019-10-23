@@ -1,58 +1,83 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import './App.css';
 
-class App extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			imageUrl: '',
-			fileName: '',
-			fileType: '',
-			colors: [],
-			swatchOverlay: false
-		};
-		this.swatchOverlay = this.swatchOverlay.bind(this);
-		this.handleRestart = this.handleRestart.bind(this);
+function App() {
+	const [imageUrl, setimageUrl] = useState('');
+	const [fileName, setfileName] = useState('');
+	const [fileType, setfileType] = useState('');
+	const [colors, setcolors] = useState([]);
+	const [swatchOverlay, setswatchOverlay] = useState(false);
+
+	const introColors = [
+		'#001f3f',
+		'#0074D9',
+		'#7FDBFF',
+		'#39CCCC',
+		'#3D9970',
+		'#2ECC40',
+		'#FFDC00',
+		'#FF851B',
+		'#FF4136',
+		'#85144b',
+		'#F012BE',
+		'#B10DC9'
+	];
+
+	function setIntroBackground() {
+		document.body.style.backgroundColor =
+			introColors[Math.floor(Math.random() * introColors.length)];
 	}
 
-	handleSubmit(e) {
+	function handleSubmit(e) {
 		e.preventDefault();
 	}
 
-	handleRestart() {
-		this.setState({
-			imageUrl: '',
-			colors: []
-		});
-		document.body.style.backgroundColor = '#3d9970';
+	function handleRestart() {
+		setimageUrl('');
+		setfileName('');
+		setfileType('');
+		setcolors([]);
+		setIntroBackground();
 	}
 
-	handleImageChange(e) {
+	function handleImageChange(e) {
 		e.preventDefault();
 		let reader = new FileReader();
-		let file = e.target.files[0];
-		reader.onloadend = () => {
-			this.setState({
-				imageUrl: URL.createObjectURL(file),
-				fileType: file.type
-			});
-		};
-		reader.readAsDataURL(file);
+		let file;
+		if (e.type === 'click') {
+			file = 'https://source.unsplash.com/random';
+			setimageUrl(file);
+			setfileType('image/png');
+			setfileName('Tiko Giorgadze');
+		} else {
+			file = e.target.files[0];
+			reader.onloadend = () => {
+				setimageUrl(URL.createObjectURL(file));
+				setfileType(file.type);
+				setfileName(file.name);
+			};
+			reader.readAsDataURL(file);
+		}
 	}
 
-	handleColors = colors => {
-		this.setState(state => ({ colors: [...state.colors, ...colors] }));
-		document.body.style.backgroundColor = this.state.colors[0];
-	};
+	function extractColors() {
+		if (imageUrl) {
+			return <ColorExtractor src={imageUrl} getColors={handleColors} />;
+		}
+	}
 
-	renderSwatches = () => {
-		const { colors } = this.state;
+	function handleColors(colors) {
+		setcolors([...colors, ...colors]);
+		document.body.style.backgroundColor = colors[0];
+	}
+
+	function renderSwatches() {
 		return colors.slice(0, 6).map((color, id) => {
 			return (
 				<div
 					key={id}
-					className="swatch-item"
+					className="swatch-item mono-text"
 					style={{
 						backgroundColor: color
 					}}
@@ -61,60 +86,58 @@ class App extends React.Component {
 				</div>
 			);
 		});
-	};
-
-	swatchOverlay() {
-		this.setState(prevState => ({ swatchOverlay: !prevState.swatchOverlay }));
 	}
 
-	render() {
-		return (
-			<div className="app">
-				{!this.state.imageUrl && (
-					<div>
-						<span role="img" aria-label="camera">
-							📷
+	function swatchOverlaySwitch() {
+		swatchOverlay ? setswatchOverlay(false) : setswatchOverlay(true);
+	}
+
+	return (
+		<div className="app">
+			{!imageUrl && (
+				<div className="intro">
+					{setIntroBackground()}
+					<span className="emoji" role="img" aria-label="camera">
+						📷
+					</span>
+					<h1>Vivid Placeholder</h1>
+					<p>
+						Upload an image to find it's dominant color and swatches. <br />
+						Or take a{' '}
+						<span className="random-image" onClick={e => handleImageChange(e)}>
+							random Unsplash image.
 						</span>
-						<h1>Vivid Placeholder</h1>
-						<p>Upload an image to find it's dominant color and swatches.</p>
-						<form onSubmit={e => this.handleSubmit(e)}>
-							<input
-								className="file-input"
-								type="file"
-								id="file"
-								onChange={e => this.handleImageChange(e)}
-							/>
-							<label htmlFor="file">choose a file</label>
-						</form>
-					</div>
-				)}
+					</p>
+					<form onSubmit={e => handleSubmit(e)}>
+						<input
+							className="file-input"
+							type="file"
+							id="file"
+							onChange={e => handleImageChange(e)}
+						/>
+						<label htmlFor="file">choose a file</label>
+					</form>
+				</div>
+			)}
 
-				{this.state.imageUrl ? (
-					this.state.fileType.includes('image') ? (
-						<div>
-							<div className="img-preview">
-								<img src={this.state.imageUrl} alt={this.state.fileName} />
-								<ColorExtractor
-									src={this.state.imageUrl}
-									getColors={this.handleColors}
-								/>
-							</div>
-							{this.state.swatchOverlay && (
-								<SwatchPicker renderSwatches={this.renderSwatches} />
-							)}
-							<SwatchButton
-								toggle={this.state.swatchOverlay}
-								action={this.swatchOverlay}
-							/>
-							<RestartButton handleRestart={this.handleRestart} />
+			{extractColors()}
+
+			{colors.length > 0 ? (
+				fileType.includes('image') ? (
+					<div>
+						<div className="img-preview">
+							<img src={imageUrl} alt={fileName} />
 						</div>
-					) : (
-						<p>Whoops. You need to upload an image for this to work.</p>
-					)
-				) : null}
-			</div>
-		);
-	}
+						{swatchOverlay && <SwatchPicker renderSwatches={renderSwatches} />}
+						<SwatchButton toggle={swatchOverlay} action={swatchOverlaySwitch} />
+						<RestartButton handleRestart={handleRestart} />
+					</div>
+				) : (
+					<p>Whoops. You need to upload an image for this to work.</p>
+				)
+			) : null}
+		</div>
+	);
 }
 
 export default App;
