@@ -2,7 +2,7 @@
 
 ![](screenshot.png)
 
-A React app that takes an image and finds its top 6 colors to change the body background and offer the colors as swatches.
+An image app built with React, that takes an image and finds its top 6 colors to change the body background and offer the colors as swatches.
 
 Uses [react-color-extractor](https://www.npmjs.com/package/react-color-extractor) for the extraction. Also uses the [Unsplash Source API](https://source.unsplash.com/) to get a random picture.
 
