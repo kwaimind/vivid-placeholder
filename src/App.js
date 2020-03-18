@@ -7,6 +7,7 @@ import SwatchButton from './Components/SwatchButton';
 import RestartButton from './Components/RestartButton';
 import SwatchPicker from './Components/SwatchPicker';
 import SplashScreen from './Components/SplashScreen';
+import Input from './Components/Input';
 
 import './App.css';
 
@@ -15,7 +16,6 @@ export default function App() {
   const [restart, setRestart] = useState(false);
   const [imageUrl, setimageUrl] = useState('');
   const [fileName, setfileName] = useState('');
-  const [fileType, setfileType] = useState('');
   const [swatchOverlay, setswatchOverlay] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,6 @@ export default function App() {
     setRestart(!restart);
     setimageUrl('');
     setfileName('');
-    setfileType('');
     setcolors([]);
     setRestart(!restart);
   };
@@ -47,7 +46,6 @@ export default function App() {
     let file = e.target.files[0];
     reader.onloadend = () => {
       setimageUrl(URL.createObjectURL(file));
-      setfileType(file.type);
       setfileName(file.name);
     };
     reader.readAsDataURL(file);
@@ -89,14 +87,7 @@ export default function App() {
       {!imageUrl && (
         <div className="intro">
           <SplashScreen useRandomImage={useRandomImage} />
-
-          <input
-            className="file-input"
-            type="file"
-            id="file"
-            onChange={useUploadedImage}
-          />
-          <label htmlFor="file">choose a file</label>
+          <Input useUploadedImage={useUploadedImage} />
         </div>
       )}
 
