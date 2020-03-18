@@ -3,20 +3,21 @@ import { ColorExtractor } from 'react-color-extractor';
 import axios from 'axios';
 
 import { introColors } from './Constants';
-import SwatchButton from './Components/SwatchButton';
 import RestartButton from './Components/RestartButton';
-import SwatchPicker from './Components/SwatchPicker';
+import Swatches from './Components/Swatches';
 import SplashScreen from './Components/SplashScreen';
 import Input from './Components/Input';
 
 import './App.css';
+
+// import { AppContext } from './Context/AppContext';
+// const Context = useContext(AppContext);
 
 export default function App() {
   const [colors, setcolors] = useState([]);
   const [restart, setRestart] = useState(false);
   const [imageUrl, setimageUrl] = useState('');
   const [fileName, setfileName] = useState('');
-  const [swatchOverlay, setswatchOverlay] = useState(false);
 
   useEffect(() => {
     document.body.style.backgroundColor =
@@ -62,26 +63,6 @@ export default function App() {
     document.body.style.backgroundColor = colors[0];
   };
 
-  const renderSwatches = () => {
-    return colors.slice(0, 6).map((color, id) => {
-      return (
-        <div
-          key={id}
-          className="swatch-item mono-text"
-          style={{
-            backgroundColor: color,
-          }}
-        >
-          {color}
-        </div>
-      );
-    });
-  };
-
-  const swatchOverlaySwitch = () => {
-    swatchOverlay ? setswatchOverlay(false) : setswatchOverlay(true);
-  };
-
   return (
     <div className="app">
       {!imageUrl && (
@@ -98,8 +79,7 @@ export default function App() {
           <div className="img-preview">
             <img src={imageUrl} alt={fileName} />
           </div>
-          {swatchOverlay && <SwatchPicker renderSwatches={renderSwatches} />}
-          <SwatchButton toggle={swatchOverlay} action={swatchOverlaySwitch} />
+          <Swatches colors={colors} />
           <RestartButton handleRestart={handleRestart} />
         </div>
       ) : null}
