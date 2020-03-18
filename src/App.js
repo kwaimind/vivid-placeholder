@@ -103,18 +103,14 @@ export default function App() {
       {extractColors()}
 
       {colors.length > 0 ? (
-        fileType.includes('image') ? (
-          <div>
-            <div className="img-preview">
-              <img src={imageUrl} alt={fileName} />
-            </div>
-            {swatchOverlay && <SwatchPicker renderSwatches={renderSwatches} />}
-            <SwatchButton toggle={swatchOverlay} action={swatchOverlaySwitch} />
-            <RestartButton handleRestart={handleRestart} />
+        <div>
+          <div className="img-preview">
+            <img src={imageUrl} alt={fileName} />
           </div>
-        ) : (
-          <p>Whoops. You need to upload an image for this to work.</p>
-        )
+          {swatchOverlay && <SwatchPicker renderSwatches={renderSwatches} />}
+          <SwatchButton toggle={swatchOverlay} action={swatchOverlaySwitch} />
+          <RestartButton handleRestart={handleRestart} />
+        </div>
       ) : null}
     </div>
   );
