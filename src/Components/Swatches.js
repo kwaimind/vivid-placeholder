@@ -9,7 +9,7 @@ export default function Swatches({ colors }) {
   return (
     <>
       <SwatchButton toggle={showSwatches} action={setShowSwatches} />
-      {showSwatches ? <SwatchPicker colors={colors} /> : null}
+      {showSwatches && <SwatchPicker colors={colors} />}
     </>
   );
 }

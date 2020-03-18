@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import axios from 'axios';
 
@@ -10,14 +10,14 @@ import Input from './Components/Input';
 
 import './App.css';
 
-// import { AppContext } from './Context/AppContext';
-// const Context = useContext(AppContext);
+import { AppContext } from './Context/AppContext';
 
 export default function App() {
   const [colors, setcolors] = useState([]);
   const [restart, setRestart] = useState(false);
   const [imageUrl, setimageUrl] = useState('');
   const [fileName, setfileName] = useState('');
+  const Context = useContext(AppContext);
 
   useEffect(() => {
     document.body.style.backgroundColor =
@@ -52,12 +52,6 @@ export default function App() {
     reader.readAsDataURL(file);
   };
 
-  const extractColors = () => {
-    if (imageUrl) {
-      return <ColorExtractor src={imageUrl} getColors={handleColors} />;
-    }
-  };
-
   const handleColors = (colors) => {
     setcolors([...colors, ...colors]);
     document.body.style.backgroundColor = colors[0];
@@ -72,7 +66,7 @@ export default function App() {
         </div>
       )}
 
-      {extractColors()}
+      {imageUrl && <ColorExtractor src={imageUrl} getColors={handleColors} />}
 
       {colors.length > 0 ? (
         <div>
