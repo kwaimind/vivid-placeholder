@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default function SwatchButton({ action, toggle }) {
+export default function SwatchButton(props) {
+  const { showSwatches, setShowSwatches } = props.actions;
   return (
-    <div className="button left" onClick={() => action(!toggle)}>
-      {toggle ? 'Hide' : 'Show'} Swatches
+    <div className="button left" onClick={() => setShowSwatches(!showSwatches)}>
+      {showSwatches ? 'Hide' : 'Show'} Swatches
     </div>
   );
 }

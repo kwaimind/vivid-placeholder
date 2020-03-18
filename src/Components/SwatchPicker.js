@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-export default function SwatchPicker({ colors }) {
+import AppContext from '../Context/AppContext';
+
+export default function SwatchPicker() {
   return (
     <div className="swatch-overlay">
       <div className="swatches">
-        <RenderSwatches colors={colors} />
+        <RenderSwatches />
       </div>
     </div>
   );
 }
 
-function RenderSwatches({ colors }) {
+function RenderSwatches() {
+  const colors = useContext(AppContext);
   return colors.slice(0, 6).map((color) => {
     return (
       <div

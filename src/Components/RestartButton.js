@@ -1,8 +1,8 @@
 import React from 'react';
 
-function RestartButton(props) {
+function RestartButton({ handleRestart }) {
   return (
-    <div className="button right" onClick={props.handleRestart}>
+    <div className="button right" onClick={handleRestart}>
       Try a new image
     </div>
   );

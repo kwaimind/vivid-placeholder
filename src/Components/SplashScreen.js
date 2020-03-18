@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function SplashScreen(props) {
+export default function SplashScreen({ useRandomImage }) {
   return (
     <>
       <span className="emoji" role="img" aria-label="camera">
@@ -10,7 +10,7 @@ export default function SplashScreen(props) {
       <p>
         Upload an image to find it's dominant color and swatches. <br />
         Or take a{' '}
-        <span className="random-image" onClick={props.useRandomImage}>
+        <span className="random-image" onClick={useRandomImage}>
           random Unsplash image.
         </span>
       </p>

@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
 import axios from 'axios';
 
+import AppContext from './Context/AppContext';
 import { introColors } from './Constants';
 import RestartButton from './Components/RestartButton';
 import Swatches from './Components/Swatches';
@@ -10,14 +11,11 @@ import Input from './Components/Input';
 
 import './App.css';
 
-import { AppContext } from './Context/AppContext';
-
 export default function App() {
   const [colors, setcolors] = useState([]);
   const [restart, setRestart] = useState(false);
   const [imageUrl, setimageUrl] = useState('');
   const [fileName, setfileName] = useState('');
-  const Context = useContext(AppContext);
 
   useEffect(() => {
     document.body.style.backgroundColor =
@@ -58,25 +56,27 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      {!imageUrl && (
-        <div className="intro">
-          <SplashScreen useRandomImage={useRandomImage} />
-          <Input useUploadedImage={useUploadedImage} />
-        </div>
-      )}
-
-      {imageUrl && <ColorExtractor src={imageUrl} getColors={handleColors} />}
-
-      {colors.length > 0 ? (
-        <div>
-          <div className="img-preview">
-            <img src={imageUrl} alt={fileName} />
+    <AppContext.Provider value={colors}>
+      <div className="app">
+        {!imageUrl && (
+          <div className="intro">
+            <SplashScreen useRandomImage={useRandomImage} />
+            <Input useUploadedImage={useUploadedImage} />
           </div>
-          <Swatches colors={colors} />
-          <RestartButton handleRestart={handleRestart} />
-        </div>
-      ) : null}
-    </div>
+        )}
+
+        {imageUrl && <ColorExtractor src={imageUrl} getColors={handleColors} />}
+
+        {colors.length > 0 && (
+          <div>
+            <div className="img-preview">
+              <img src={imageUrl} alt={fileName} />
+            </div>
+            <Swatches />
+            <RestartButton handleRestart={handleRestart} />
+          </div>
+        )}
+      </div>
+    </AppContext.Provider>
   );
 }
