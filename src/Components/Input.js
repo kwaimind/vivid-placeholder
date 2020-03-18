@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function Input({ useUploadedImage }) {
   return (
@@ -13,3 +14,7 @@ export default function Input({ useUploadedImage }) {
     </>
   );
 }
+
+Input.propTypes = {
+  useUploadedImage: PropTypes.func.isRequired,
+};

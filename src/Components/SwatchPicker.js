@@ -14,17 +14,15 @@ export default function SwatchPicker() {
 
 function RenderSwatches() {
   const colors = useContext(AppContext);
-  return colors.slice(0, 6).map((color) => {
-    return (
-      <div
-        key={color.toString()}
-        className="swatch-item mono-text"
-        style={{
-          backgroundColor: color,
-        }}
-      >
-        {color}
-      </div>
-    );
-  });
+  return colors.slice(0, 6).map((color) => (
+    <div
+      key={color.toString()}
+      className="swatch-item mono-text"
+      style={{
+        backgroundColor: color,
+      }}
+    >
+      {color}
+    </div>
+  ));
 }

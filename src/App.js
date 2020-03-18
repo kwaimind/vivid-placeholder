@@ -12,10 +12,10 @@ import Input from './Components/Input';
 import './App.css';
 
 export default function App() {
-  const [colors, setcolors] = useState([]);
+  const [colors, setColors] = useState([]);
   const [restart, setRestart] = useState(false);
-  const [imageUrl, setimageUrl] = useState('');
-  const [fileName, setfileName] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
+  const [fileName, setFileName] = useState('');
 
   useEffect(() => {
     document.body.style.backgroundColor =
@@ -24,16 +24,16 @@ export default function App() {
 
   const handleRestart = () => {
     setRestart(!restart);
-    setimageUrl('');
-    setfileName('');
-    setcolors([]);
+    setImageUrl('');
+    setFileName('');
+    setColors([]);
     setRestart(!restart);
   };
 
   const useRandomImage = async () => {
     try {
       const getImage = await axios.get('https://source.unsplash.com/random');
-      setimageUrl(getImage.request.responseURL);
+      setImageUrl(getImage.request.responseURL);
     } catch (error) {
       console.error(error);
     }
@@ -41,17 +41,17 @@ export default function App() {
 
   const useUploadedImage = (e) => {
     e.preventDefault();
-    let reader = new FileReader();
-    let file = e.target.files[0];
+    const reader = new FileReader();
+    const file = e.target.files[0];
     reader.onloadend = () => {
-      setimageUrl(URL.createObjectURL(file));
-      setfileName(file.name);
+      setImageUrl(URL.createObjectURL(file));
+      setFileName(file.name);
     };
     reader.readAsDataURL(file);
   };
 
   const handleColors = (colors) => {
-    setcolors([...colors, ...colors]);
+    setColors([...colors, ...colors]);
     document.body.style.backgroundColor = colors[0];
   };
 

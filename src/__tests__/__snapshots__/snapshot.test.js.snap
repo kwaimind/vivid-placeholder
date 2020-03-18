@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`The components mount with no errors <App /> renders without crashing 1`] = `
+<div
+  className="app"
+>
+  <div
+    className="intro"
+  >
+    <span
+      aria-label="camera"
+      className="emoji"
+      role="img"
+    >
+      📷
+    </span>
+    <h1>
+      Vivid Placeholder
+    </h1>
+    <p>
+      Upload an image to find it's dominant color and swatches.
+      <br />
+      Or take a  
+      <span
+        className="random-image"
+        onClick={[Function]}
+        role="button"
+      >
+        random Unsplash image.
+      </span>
+    </p>
+    <input
+      className="file-input"
+      id="file"
+      onChange={[Function]}
+      type="file"
+    />
+    <label
+      htmlFor="file"
+    >
+      choose a file
+    </label>
+  </div>
+  
+</div>
+`;
+
+exports[`The components mount with no errors <Input /> renders without crashing 1`] = `
+Array [
+  <input
+    className="file-input"
+    id="file"
+    onChange={[Function]}
+    type="file"
+  />,
+  <label
+    htmlFor="file"
+  >
+    choose a file
+  </label>,
+]
+`;
+
+exports[`The components mount with no errors <RestartButton /> renders without crashing 1`] = `
+<div
+  className="button right"
+  onClick={[Function]}
+  onKeyDown={[Function]}
+  role="form"
+>
+  Try a new image
+</div>
+`;
+
+exports[`The components mount with no errors <SplashScreen /> renders without crashing 1`] = `
+Array [
+  <span
+    aria-label="camera"
+    className="emoji"
+    role="img"
+  >
+    📷
+  </span>,
+  <h1>
+    Vivid Placeholder
+  </h1>,
+  <p>
+    Upload an image to find it's dominant color and swatches.
+    <br />
+    Or take a  
+    <span
+      className="random-image"
+      onClick={[Function]}
+      role="button"
+    >
+      random Unsplash image.
+    </span>
+  </p>,
+]
+`;
+
+exports[`The components mount with no errors <SwatchButton /> renders without crashing 1`] = `
+<div
+  className="button left"
+  onClick={[Function]}
+>
+  Hide
+  Swatches
+</div>
+`;
+
+exports[`The components mount with no errors <SwatchPicker /> renders without crashing 1`] = `
+<div
+  className="swatch-overlay"
+>
+  <div
+    className="swatches"
+  />
+</div>
+`;
+
+exports[`The components mount with no errors <Swatches /> renders without crashing 1`] = `
+<div
+  className="button left"
+  onClick={[Function]}
+>
+  Show
+  Swatches
+</div>
+`;
