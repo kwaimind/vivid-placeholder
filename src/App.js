@@ -1,69 +1,70 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ColorExtractor } from 'react-color-extractor';
+import axios from 'axios';
 
 import { introColors } from './Constants';
 import SwatchButton from './Components/SwatchButton';
 import RestartButton from './Components/RestartButton';
 import SwatchPicker from './Components/SwatchPicker';
+import SplashScreen from './Components/SplashScreen';
 
 import './App.css';
 
 export default function App() {
   const [colors, setcolors] = useState([]);
+  const [restart, setRestart] = useState(false);
   const [imageUrl, setimageUrl] = useState('');
   const [fileName, setfileName] = useState('');
   const [fileType, setfileType] = useState('');
   const [swatchOverlay, setswatchOverlay] = useState(false);
 
-  function setIntroBackground() {
+  useEffect(() => {
     document.body.style.backgroundColor =
       introColors[Math.floor(Math.random() * introColors.length)];
-  }
+  }, [restart]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-  }
-
-  function handleRestart() {
+  const handleRestart = () => {
+    setRestart(!restart);
     setimageUrl('');
     setfileName('');
     setfileType('');
     setcolors([]);
-    setIntroBackground();
-  }
+    setRestart(!restart);
+  };
 
-  function handleImageChange(e) {
+  const useRandomImage = async () => {
+    try {
+      const getImage = await axios.get('https://source.unsplash.com/random');
+      setimageUrl(getImage.request.responseURL);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const useUploadedImage = (e) => {
     e.preventDefault();
     let reader = new FileReader();
-    let file;
-    if (e.type === 'click') {
-      file = 'https://source.unsplash.com/random';
-      setimageUrl(file);
-      setfileType('image/png');
-      setfileName('Tiko Giorgadze');
-    } else {
-      file = e.target.files[0];
-      reader.onloadend = () => {
-        setimageUrl(URL.createObjectURL(file));
-        setfileType(file.type);
-        setfileName(file.name);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
+    let file = e.target.files[0];
+    reader.onloadend = () => {
+      setimageUrl(URL.createObjectURL(file));
+      setfileType(file.type);
+      setfileName(file.name);
+    };
+    reader.readAsDataURL(file);
+  };
 
-  function extractColors() {
+  const extractColors = () => {
     if (imageUrl) {
       return <ColorExtractor src={imageUrl} getColors={handleColors} />;
     }
-  }
+  };
 
-  function handleColors(colors) {
+  const handleColors = (colors) => {
     setcolors([...colors, ...colors]);
     document.body.style.backgroundColor = colors[0];
-  }
+  };
 
-  function renderSwatches() {
+  const renderSwatches = () => {
     return colors.slice(0, 6).map((color, id) => {
       return (
         <div
@@ -77,40 +78,25 @@ export default function App() {
         </div>
       );
     });
-  }
+  };
 
-  function swatchOverlaySwitch() {
+  const swatchOverlaySwitch = () => {
     swatchOverlay ? setswatchOverlay(false) : setswatchOverlay(true);
-  }
+  };
 
   return (
     <div className="app">
       {!imageUrl && (
         <div className="intro">
-          {setIntroBackground()}
-          <span className="emoji" role="img" aria-label="camera">
-            📷
-          </span>
-          <h1>Vivid Placeholder</h1>
-          <p>
-            Upload an image to find it's dominant color and swatches. <br />
-            Or take a{' '}
-            <span
-              className="random-image"
-              onClick={(e) => handleImageChange(e)}
-            >
-              random Unsplash image.
-            </span>
-          </p>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <input
-              className="file-input"
-              type="file"
-              id="file"
-              onChange={(e) => handleImageChange(e)}
-            />
-            <label htmlFor="file">choose a file</label>
-          </form>
+          <SplashScreen useRandomImage={useRandomImage} />
+
+          <input
+            className="file-input"
+            type="file"
+            id="file"
+            onChange={useUploadedImage}
+          />
+          <label htmlFor="file">choose a file</label>
         </div>
       )}
 
