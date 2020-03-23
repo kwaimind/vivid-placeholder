@@ -32,7 +32,11 @@ export default function App() {
 
   const useRandomImage = async () => {
     try {
-      const getImage = await axios.get('https://source.unsplash.com/random');
+      const getImage = await axios({
+        method: 'get',
+        url: 'https://source.unsplash.com/random',
+        responseType: 'stream',
+      });
       setImageUrl(getImage.request.responseURL);
     } catch (error) {
       console.error(error);

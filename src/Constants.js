@@ -8,7 +8,6 @@ export const introColors = [
   '#FFDC00',
   '#FF851B',
   '#FF4136',
-  '#85144b',
   '#F012BE',
   '#B10DC9',
 ];
